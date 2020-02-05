@@ -1,0 +1,480 @@
+/*!
+ * Start Bootstrap - Full Slider (https://startbootstrap.com/template-overviews/full-slider)
+ * Copyright 2013-2017 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-full-slider/blob/master/LICENSE)
+ */
+
+/* Place holder images deleted
+"http://placehold.it/1900x1080"
+*/
+
+.cursive {
+  font-family: 'Dancing Script', cursive;
+}
+
+.carousel-item {
+  height: 100vh;
+  min-height: 300px;
+  max-height: 500px;
+  background: no-repeat center center scroll;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.short{
+  height: 600px;
+  /*height:calc(100% - 50px);*/
+}
+
+/* module and fade out truncate text overflow on post.html */
+.module{
+  overflow: hidden;
+}
+
+.fadeout {
+  position: relative;
+  height: 7.2em; /* exactly X lines @ 1.2em * line */
+}
+.fadeout:after {
+  content: "";
+  text-align: right;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 70%;
+  height: 1.2em;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%);
+}
+
+.hide-me{
+  display: none;
+}
+
+/*
+.short  .assets/img-responsive {
+    display: block;
+    width: auto;
+    max-height: 100%;
+}*/
+
+.container-crop {
+  display: block;
+  width: 100%;
+  height: auto;
+  /*height: 100%;*/
+  position: relative;
+  overflow: hidden;
+  /* width="1920" height="1343" */
+  /* 34.37% = 100 / (w / h) = 100 / (640 / 220) */
+  /*padding: 0 0  0 142.95% ; */
+  padding: 40% 0 0  0 ;
+
+}
+
+/* Used in Support.html */
+/* TODO: Make this responsive */
+.container-crop assets/img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+/* My own theme */
+body {
+ /*background-color: #616161;*/
+ background-color: #3E4551;
+}
+
+.dark-section {
+  /*background-color: #494947; wix's color */
+  background-color: #3E4551;
+}
+
+.white-section {
+  /*background-color: #494947; wix's color */
+  background-color: #fff;
+}
+
+.green-text {
+  color: #9DB946;
+}
+.gray-text {
+  color: #616161;
+}
+.green-section {
+  /*max-width: 100%;*/
+  background: #9DB946;
+}
+
+.dark-gray-text{
+  color: #3E4551;
+}
+
+/* Form edits */
+.no-border {
+    border: 0;
+    box-shadow: none; /* You may want to include this as bootstrap applies these styles too */
+    border-bottom: 1px solid #616161;
+
+}
+
+#button-know-more {
+  text-align: center;
+}
+#button-contact {
+  text-align: center;
+}
+
+/*// Extra small devices (portrait phones, less than 576px)
+// No media query since this is the default in Bootstrap*/
+
+/*// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) {
+
+}*/
+
+.how-it-works {
+  display: none;
+}
+
+.my-inpact {
+  /*background-color: rgb(250, 251, 252);*/
+  background-color: #9DB946;
+}
+
+
+.my-nav {
+  z-index: 10;
+  /* Places nav in-front of everything */
+  width: 230px;
+  margin-bottom: -100px;
+  position: absolute;
+  border-radius: 1px 1px 20px 1px;
+  /* This trasform moves the drawer off canvas. */
+  -webkit-transform: translate(-230px, 0);
+  transform: translate(-230px, 0);
+  /* Optionally, we animate the drawer. */
+  transition: transform 0.3s ease;
+  background-color: #3E4551;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.5);
+}
+
+.my-nav.open {
+  /* position: relative; */
+  order : 0;
+  /* width: 100%; */
+  /* z-index: auto; */
+  -webkit-transform: translate(0, 0);
+  transform: translate(0, 0);
+    /* background-color: #fff; */
+}
+
+.my-card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  width: 25rem;
+}
+
+.project-card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  width: 20rem;
+}
+
+/* Tabs on myInpact page */
+/*.nav-item > {*/
+  /*background-color: white;*/
+/*}*/
+
+.nav-item > .active {
+  background-color: gainsboro !important;
+}
+
+/*.nav-item > a:hover {*/
+  /*!*color: aqua;*!*/
+/*}*/
+
+.logo {
+  display: block;
+  text-indent: -9999px;
+  width: 72px;
+  height: 38px;
+  background: url(./assets/icons/earth-day.svg);
+  background-size: 72px 42px;
+}
+
+div.wish-tree {
+  background-image: url('./assets/img/carousel/WishTree_400w500h.jpg');
+  background-size: cover;
+}
+
+div.boat-path {
+  background-image: url('./assets/img/carousel/BoatPath_400w500h.jpg');
+  background-size: cover;
+}
+
+div.mon-hut {
+  background-image: url('./assets/img/carousel/Mongolia_400w500h.jpg');
+  background-size: cover;
+}
+
+div.taj-ind {
+  background-image: url('./assets/img/carousel/India_400w500h.jpg');
+  background-size: cover;
+}
+
+div.tib-fla {
+  background-image: url('./assets/img/carousel/Tibet_400w500h.jpg');
+  background-size: cover;
+}
+
+/* Support page */
+div.hand-rock {
+  background-image: url('./assets/img/support/handRocks_420w400h.jpg');
+  background-size: cover;
+}
+
+
+@media screen and (min-width: 400px) {
+
+  div.wish-tree {
+    background-image: url('./assets/img/carousel/WishTree_576w500h.jpg');
+    background-size: cover;
+  }
+
+  div.boat-path {
+    background-image: url('./assets/img/carousel/BoatPath_576w500h.jpg');
+    background-size: cover;
+  }
+
+  div.mon-hut {
+    background-image: url('./assets/img/carousel/Mongolia_576w500h.jpg');
+    background-size: cover;
+  }
+
+  div.taj-ind {
+    background-image: url('./assets/img/carousel/India_576w500h.jpg');
+    background-size: cover;
+  }
+
+  div.tib-fla {
+    background-image: url('./assets/img/carousel/Tibet_576w500h.jpg');
+    background-size: cover;
+  }
+
+  /* Support page */
+  div.hand-rock {
+    background-image: url('./assets/img/support/handRocks_576w500h.jpg');
+    background-size: cover;
+  }
+
+  .team-pic {
+    width: 30vw;
+  }
+}
+
+
+@media screen and (min-width: 576px) {
+  div.wish-tree {
+    background-image: url('./assets/img/carousel/WishTree_768w500h.jpg');
+    background-size: cover;
+  }
+  /* Support page */
+  div.hand-rock {
+    background-image: url('./assets/img/support/handRocks_768w500h.jpg');
+    background-size: cover;
+  }
+}
+
+/*// Medium devices (tablets, 768px and up)*/
+@media (min-width: 768px) {
+
+  div.wish-tree {
+    /* background-image: url('./assets/img/carousel/WishTree_992w.jpg'); */
+    background-image: url('./assets/img/carousel/WishTree_992w500h.jpg');
+    background-size: cover;
+  }
+
+  div.boat-path {
+    /* background-image: url('./assets/img/carousel/BoatPath_1000w.jpg'); */
+    background-image: url('./assets/img/carousel/BoatPath_992w500h.jpg');
+    background-size: cover;
+  }
+
+  div.mon-hut {
+    /* background-image: url('./assets/img/carousel/BoatPath_2000w.jpg'); */
+    background-image: url('./assets/img/carousel/Mongolia_992w500h.jpg');
+    background-size: cover;
+  }
+
+  div.taj-ind {
+    background-image: url('./assets/img/carousel/India_992w500h.jpg');
+    background-size: cover;
+  }
+
+  div.tib-fla {
+    background-image: url('./assets/img/carousel/Tibet_992w500h.jpg');
+    background-size: cover;
+  }
+
+  .contain-full {
+    background-image: url('./assets/img/coastline-sep.jpg');
+    background-size: 175% auto;
+    /*background-size: contain;*/
+  }
+
+  /* Support page */
+  div.hand-rock {
+    background-image: url('./assets/img/support/handRocks_992w500h.jpg');
+    background-size: cover;
+  }
+
+  .canvas-neighbor {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+  }
+
+  .team-pic {
+    width: 15vw;
+  }
+  figcaption>h3 {
+    font-size: 1.5em;
+  }
+  figcaption>ul>li {
+    font-size: 0.8em;
+  }
+}
+
+/* Large devices */
+@media (min-width: 992px) {
+
+  div.wish-tree {
+    /* background-image: url('./assets/img/carousel/WishTree_992w.jpg'); */
+    background-image: url('./assets/img/carousel/WishTree_1200w500h.jpg');
+    background-size: cover;
+  }
+
+  div.boat-path {
+    /* background-image: url('./assets/img/carousel/BoatPath_1000w.jpg'); */
+    background-image: url('./assets/img/carousel/BoatPath_1200w500h.jpg');
+    background-size: cover;
+  }
+
+  div.mon-hut {
+    /* background-image: url('./assets/img/carousel/BoatPath_2000w.jpg'); */
+    background-image: url('./assets/img/carousel/Mongolia_1200w500h.jpg');
+    background-size: cover;
+  }
+
+  div.taj-ind {
+    background-image: url('./assets/img/carousel/India_1200w500h.jpg');
+    background-size: cover;
+  }
+
+  div.tib-fla {
+    background-image: url('./assets/img/carousel/Tibet_1200w500h.jpg');
+    background-size: cover;
+  }
+
+  /* Support page */
+  div.hand-rock {
+    background-image: url('./assets/img/support/handRocks_1200w600h.jpg');
+    background-size: cover;
+  }
+
+  .how-it-works {
+    display: inline;
+  }
+  .how-it-works-small {
+    display: none;
+  }
+  #button-know-more {
+    text-align: right;
+  }
+  #button-contact {
+    text-align: left;
+  }
+  .team-pic {
+    width: 13vw;
+  }
+  /* figcaption>h3 {
+    font-size: 2.5em;
+  }
+  figcaption>ul>li {
+    font-size: 1.5em;
+  } */
+  /* Menu Side Bar my Inpact */
+  .my-nav {
+  position: relative;
+  order : 0;
+  width: 100%;
+  z-index: auto;
+  /* margin-left: auto;
+  margin-right: auto; */
+  -webkit-transform: translate(0, 0);
+  transform: translate(0, 0);
+  }
+
+}
+
+@media (min-width: 1200px) {
+  div.wish-tree {
+    background-image: url('./assets/img/carousel/WishTree_1800w600h.jpg');
+    background-size: cover;
+  }
+  div.boat-path {
+    background-image: url('./assets/img/carousel/BoatPath_1800w600h.jpg');
+    background-size: cover;
+  }
+
+  div.mon-hut {
+    background-image: url('./assets/img/carousel/Mongolia_1800w600h.jpg');
+    background-size: cover;
+  }
+
+  div.taj-ind {
+    background-image: url('./assets/img/carousel/India_1800w600h.jpg');
+    background-size: cover;
+  }
+
+  div.tib-fla {
+    background-image: url('./assets/img/carousel/Tibet_1800w600h.jpg');
+    background-size: cover;
+  }
+
+  .carousel-item{
+    max-height: 600px;
+  }
+
+  /* Support page */
+  div.hand-rock {
+    background-image: url('./assets/img/support/handRocks_1600w700h.jpg');
+    background-size: cover;
+  }
+}
+
+@media (min-width: 1600px) {
+  /* Support page */
+  div.hand-rock {
+    background-image: url('./assets/img/support/handRocks_1800w700h.jpg');
+    background-size: cover;
+  }
+}
+
+/* @media (min-width: 2000px) {
+  div.boat-path {
+    background-image: url('./assets/img/carousel/BoatPath_3000w.jpg');
+    background-size: cover;
+  }
+} */
+/*// Large devices (desktops, 992px and up)
+@media (min-width: 992px) { ... }
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) { ... }*/
