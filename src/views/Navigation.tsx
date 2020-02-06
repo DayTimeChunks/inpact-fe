@@ -38,7 +38,7 @@ export default class Navigation extends React.Component<INavProps, INavState> {
       return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
           <div className="container py-1">
-              <img className="logo" src={earthDay}/>
+              <img className="logo" src={earthDay} alt="inpact logo"/>
               <a className="navbar-brand" href="https://www.people-inpact.com/"
                              target="_blank"
                              rel="noopener noreferrer">inPact</a>
