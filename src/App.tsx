@@ -12,7 +12,6 @@ import * as UsersAPI from './utils/UsersAPI'
 export default class App extends React.Component<IAppProps, IAppState> {
     constructor(props: IAppProps){
       super(props);
-      console.log("props on App", props);
 
       this.state = {
           loggedIn: false,
@@ -22,10 +21,11 @@ export default class App extends React.Component<IAppProps, IAppState> {
       this.goToDashboard = this.goToDashboard.bind(this);
       this.checkCredentialsSignup = this.checkCredentialsSignup.bind(this);
       this.checkCredentialsLogin = this.checkCredentialsLogin.bind(this);
+      this.onAuthorization = this.onAuthorization.bind(this)
     }
 
     public onAuthorization(user: object) {
-      this.setState({loggedIn: true, user: user})
+        this.setState({loggedIn: true, user: user})
     }
 
     private goToDashboard(props: object){
@@ -42,7 +42,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
 
     private checkCredentialsLogin() {
         if (this.state.loggedIn){
-            return <Redirect to="/my-inpact/profile"/>;
+            return <Redirect to="/my-inpact/profile"/>; // TODO: redirect to live-stream
         } else {
             return <Login userAuthorized={this.onAuthorization}/>;
         }

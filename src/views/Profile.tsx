@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { IProfileProps, IProfileState} from '../domain/types'
 import * as UsersAPI from '../utils/UsersAPI'
+import { Spinner, Images, Avatar, ImageButtons } from '../components';
 
 export default class Profile extends React.Component<IProfileProps, IProfileState> {
 
@@ -44,10 +45,9 @@ export default class Profile extends React.Component<IProfileProps, IProfileStat
     return base64Flag + window.btoa(binary);
   }
 
-  public componentWillMount(){
+  public componentDidMount(){
       UsersAPI.getUserProfile({ user: this.props.user })
           .then(user => {
-              console.log("user: ", user)
               console.log("user.avatar ", user.avatar);
 
               this.setState({
@@ -169,22 +169,20 @@ export default class Profile extends React.Component<IProfileProps, IProfileStat
 
   public render() {
 
-      // console.log("Profile props", this.props);
+      console.log("Profile props", this.props);
       const { uploading, images, avatar } = this.state;
 
       const avatarLoader = () => {
-          console.warn("TODO: Implement avatarLoader()")
-          return <h1>Implement avatarLoader()</h1>;
-          // switch(true) {
-          //     case uploading:
-          //         return <Spinner/>;
-          //     case (images ? images.length > 0 && images![0].secure_url : false):
-          //         return <Images images={images!} removeImage={this.removeImage} />;
-          //     case (avatar ? avatar.length > 0: false):
-          //         return <Avatar avatar={avatar!} removeImage={this.removeImage}/>
-          //     default:
-          //         return <ImageButtons onChange={this.onChange} isMultiFile={false} />
-          // }
+          switch(true) {
+              case uploading:
+                  return <Spinner/>;
+              case (images ? images.length > 0 && images![0].secure_url : false):
+                  return <Images images={images!} removeImage={this.removeImage} />;
+              case (avatar ? avatar.length > 0: false):
+                  return <Avatar avatar={avatar!} removeImage={this.removeImage}/>
+              default:
+                  return <ImageButtons onChange={this.onChange} isMultiFile={false} />
+          }
       };
 
       const currentBio = () => {

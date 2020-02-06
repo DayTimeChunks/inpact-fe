@@ -7,16 +7,16 @@ import Topic from '../components/Topic';
 export default class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
 
   constructor(props: IDashboardProps){
-      super(props);
-      console.log("props on Dashboard:", this.props);
-      // this.state = {
-      //     params: this.props.match.params
-      // };
+      super(props); // carries also default objects: history, location, etc. (not yet defined in props' type)
+    //   this.state = {
+    //       params: this.props.match.params
+    //   };
       this.loadTabView = this.loadTabView.bind(this)
   }
 
   private loadTabView() {
-      if (this.props.loggedIn) {
+      const { loggedIn } = this.props
+      if (loggedIn) {
           const url = "/my-inpact";
           return (
               <div id="my-inpact" className="py-5 my-3 white-section">

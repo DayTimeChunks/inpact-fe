@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { ILoginProps, ILoginState } from '../domain/types';
-// import { RouteComponentProps } from "react-router-dom"; // provides access to history through this.props.
 import googleIcon from "../assets/icons/Freepik-google.svg"
 import { Link } from "react-router-dom";
 import * as UsersAPI from '../utils/UsersAPI'
@@ -21,7 +20,7 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
             inputError: '',
             google: false
         }
-        this.handleSubmit = this.handleSubmit.bind(this)
+        // this.handleSubmit = this.handleSubmit.bind(this)
     }
 
     public handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -31,7 +30,7 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
         const email = this.email.current!.value ? this.email.current!.value : "";
         const password = this.password.current!.value ? this.password.current!.value : "";
         const complete = (!(!email || !password)); // false if either is undefined
-        console.log("complete", complete)
+
         if (!complete){
             inputError = "Email or password are missing";
             this.setState({
@@ -42,8 +41,6 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
                 "email": `${email}`,
                 "password": `${password}`
             }).then(user => {
-                // if (resJson.status! === 'success') return
-                console.log("Returned resJson on login: ", user);
 
                 if (user.statusText === "success"){
                     this.props.userAuthorized(user)
@@ -60,7 +57,8 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
     };
 
     public render(){
-        return (<section className="py-5 my-5">
+        return (
+        <section className="py-5 my-5">
             <div className="container py-5">
                 <div className="row">
                     <div className="col-md-2"/>

@@ -57,7 +57,6 @@ export default class Signup extends React.Component<ISignupProps, ISignupState> 
               "password": `${password}`
               })
               .then(user => {
-                  console.log("user", user);
                   if (user.statusText === "success"){
                       this.props.userAuthorized(user)
 
@@ -69,7 +68,7 @@ export default class Signup extends React.Component<ISignupProps, ISignupState> 
                           passwordError: ''
                       });
                   } else {
-                      console.log("good errors", user);
+                      console.log("User was not received from backend as expected, user:", user);
                   }
               })
               .catch(err => console.log("error", err))
