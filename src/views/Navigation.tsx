@@ -2,6 +2,7 @@ import * as React from 'react'
 import { INavProps, INavState } from '../domain/types'
 import { ButtonGroup, Dropdown, DropdownButton } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 // import earthDay from '../assets/icons/earth-day.svg'
 
 export default class Navigation extends React.Component<INavProps, INavState> {
@@ -12,13 +13,16 @@ export default class Navigation extends React.Component<INavProps, INavState> {
   }
 
   public isLoggedIn = () => {
-      console.log("pros on navigation", this.props)
       if (this.props.loggedIn){
           return (
               <ButtonGroup>
                   <DropdownButton as={ButtonGroup} id="bg-nested-dropdown" title="my inPact" variant="secondary">
-                      <Dropdown.Item href="/my-inpact/profile">My profile</Dropdown.Item>
-                      <Dropdown.Item href="/my-inpact/projects">My projects</Dropdown.Item>
+                      <Dropdown.Item>
+                        <NavLink to={`/my-inpact/profile`}>My profile</NavLink>
+                      </Dropdown.Item>
+                      <Dropdown.Item>
+                        <NavLink to={`/my-inpact/projects`}>My profile</NavLink>
+                      </Dropdown.Item>
                       <Dropdown.Item onClick={this.props.onLogOut}>Log out</Dropdown.Item>
                   </DropdownButton>
               </ButtonGroup>
