@@ -49,8 +49,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
     };
 
     public logOut = () => {
-        console.log("logging out")
-        UsersAPI.logout().then(resJson => console.log("logging out object:", resJson));
+        UsersAPI.logout().then(resJson => console.log("Backend logout status:", resJson));
         this.setState({
             loggedIn: false,
             user: {}

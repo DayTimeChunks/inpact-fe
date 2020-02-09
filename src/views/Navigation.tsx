@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { INavProps, INavState } from '../domain/types'
-import { ButtonGroup, Dropdown, DropdownButton } from "react-bootstrap";
+import { ButtonGroup, DropdownButton, NavItem } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { NavLink } from 'react-router-dom';
-import earthDay from '../assets/icons/earth-day.svg'
+import earthDay from '../assets/icons/earth-day.svg';
 
 export default class Navigation extends React.Component<INavProps, INavState> {
 
@@ -16,14 +16,10 @@ export default class Navigation extends React.Component<INavProps, INavState> {
       if (this.props.loggedIn){
           return (
               <ButtonGroup>
-                  <DropdownButton as={ButtonGroup} id="bg-nested-dropdown" title="my inPact" variant="secondary">
-                      <Dropdown.Item>
-                        <NavLink to={`/my-inpact/profile`}>My profile</NavLink>
-                      </Dropdown.Item>
-                      <Dropdown.Item>
-                        <NavLink to={`/my-inpact/projects`}>My projects</NavLink>
-                      </Dropdown.Item>
-                      <Dropdown.Item onClick={this.props.onLogOut}>Log out</Dropdown.Item>
+                  <DropdownButton  as={ButtonGroup} id="bg-nested-dropdown" title="my inPact" variant="secondary">
+                    <NavItem className="ml-3"><NavLink to={`/my-inpact/profile`}>My profile</NavLink></NavItem>
+                    <NavItem className="ml-3"><NavLink to={`/my-inpact/projects`}>My projects</NavLink></NavItem>
+                    <NavItem className="ml-3"><NavLink onClick={this.props.onLogOut}  to={`/my-inpact/login`}>Log out</NavLink></NavItem>
                   </DropdownButton>
               </ButtonGroup>
           )

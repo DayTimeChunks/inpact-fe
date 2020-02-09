@@ -1,7 +1,7 @@
 
 export interface IAppState {
   loggedIn: boolean;
-  user: object;
+  user: IProfileProps | object;
 }
 export interface IAppProps {}
 
@@ -38,7 +38,7 @@ export interface IDashboardState {
 
 export interface IProfileProps {
   user: {
-    username: string,
+    userName: string,
     email: string,
     token: string
   };
@@ -50,8 +50,8 @@ export interface IProfileState {
   firstName: string;
   lastName: string;
   email: string;
-  bio: string;
-  bioInput: string;
+  aboutMe: string;
+  aboutMeUpdate: string;
   uploading: boolean;
   images?: Array<{public_id: string; secure_url: string }>;
   avatar?: string;

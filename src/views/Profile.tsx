@@ -5,64 +5,62 @@ import { Spinner, Images, Avatar, ImageButtons } from '../components';
 
 export default class Profile extends React.Component<IProfileProps, IProfileState> {
 
-  private userName = React.createRef<HTMLInputElement>();
-  private contactEmail = React.createRef<HTMLInputElement>();
-  private firstName = React.createRef<HTMLInputElement>();
-  private lastName = React.createRef<HTMLInputElement>();
-  private password = React.createRef<HTMLInputElement>();
-  private confirm = React.createRef<HTMLInputElement>();
-  private bio = React.createRef<HTMLTextAreaElement>();
+    private userName = React.createRef<HTMLInputElement>();
+    private contactEmail = React.createRef<HTMLInputElement>();
+    private firstName = React.createRef<HTMLInputElement>();
+    private lastName = React.createRef<HTMLInputElement>();
+    private password = React.createRef<HTMLInputElement>();
+    private confirm = React.createRef<HTMLInputElement>();
+    private aboutMe = React.createRef<HTMLTextAreaElement>();
 
-  private readonly imageTypes: string[];
+    private readonly imageTypes: string[];
 
-  constructor(props: IProfileProps){
-    super(props);
-    this.state = {
-      id: 0,
-      userName: this.props.user.username,
-      firstName: '',
-      lastName: '',
-      email: this.props.user.email,
-      bio: '',
-      bioInput: "Tell us a bit about yourself...",
-      uploading: false,
-      images: [{public_id: "", secure_url: ""}],
-      avatar: ''
+    constructor(props: IProfileProps){
+        super(props);
+        this.state = {
+            id: 0,
+            userName: this.props.user.userName,
+            firstName: '',
+            lastName: '',
+            email: this.props.user.email,
+            aboutMe: '',
+            aboutMeUpdate: "Tell us a bit about yourself...",
+            uploading: false,
+            images: [{public_id: "", secure_url: ""}],
+            avatar: ''
+        }
+        this.arrayBufferToBase64 = this.arrayBufferToBase64.bind(this);
+        this.imageTypes = ['image/png', 'image/jpeg', 'image/gif'];
     }
-    this.arrayBufferToBase64 = this.arrayBufferToBase64.bind(this);
-    this.imageTypes = ['image/png', 'image/jpeg', 'image/gif'];
-  }
 
-  // public state = {};
-  private arrayBufferToBase64(dataType: string, buffer: Int8Array): string {
-    // credits:
-    // https://stackoverflow.com/questions/9267899/arraybuffer-to-base64-encoded-string
-    // https://medium.com/@colinrlly/send-store-and-show-images-with-react-express-and-mongodb-592bc38a9ed
-    const base64Flag = `data:${dataType};base64,`;
-    let binary = '';
-    const bytes = [].slice.call(new Uint8Array(buffer));
-    bytes.forEach((b: any) => binary += String.fromCharCode(b));
-    return base64Flag + window.btoa(binary);
-  }
+    public async componentDidMount(){
+        const user = await UsersAPI.getUserProfile({ user: this.props.user })
+        if (user.password) {
+            console.warn("Stop sending back password to front end!!")
+        }
+        let { email, userName } = this.props.user;
+        this.setState({
+            uploading: false,
+            email: user.email ? user.email: email,
+            userName: user.user_name ? user.user_name: userName,
+            firstName: user.first_name ? user.first_name: '',
+            lastName: user.last_name ? user.last_name: '',
+            aboutMe: user.about_me ? user.about_me: '',
+            avatar: user.avatar ? this.arrayBufferToBase64(this.imageTypes[0], user.avatar.data): undefined
+        })
+    }
 
-  public componentDidMount(){
-      UsersAPI.getUserProfile({ user: this.props.user })
-          .then(user => {
-              console.log("user.avatar ", user.avatar);
-
-              this.setState({
-                  uploading: false,
-                  userName: user.username ? user.username: this.props.user.username,
-                  firstName: user.name ? user.name: '',
-                  lastName: user.surname ? user.surname: '',
-                  email: user.email ? user.email: this.props.user.email,
-                  bio: user.bio ? user.bio: '',
-                  avatar: user.avatar ? this.arrayBufferToBase64(this.imageTypes[0], user.avatar.data): undefined
-              })
-          }
-      )
-
-  }
+    // public state = {};
+    private arrayBufferToBase64(dataType: string, buffer: Int8Array): string {
+        // credits:
+        // https://stackoverflow.com/questions/9267899/arraybuffer-to-base64-encoded-string
+        // https://medium.com/@colinrlly/send-store-and-show-images-with-react-express-and-mongodb-592bc38a9ed
+        const base64Flag = `data:${dataType};base64,`;
+        let binary = '';
+        const bytes = [].slice.call(new Uint8Array(buffer));
+        bytes.forEach((b: any) => binary += String.fromCharCode(b));
+        return base64Flag + window.btoa(binary);
+        }
 
   // TODO: Include toasts for edge cases
   // public toast = notify.createShowQueue();
@@ -137,21 +135,21 @@ export default class Profile extends React.Component<IProfileProps, IProfileStat
       })
   };
 
-  public handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  public handleUpdateSave = (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-
+      if (this.password) {
+          console.warn("Password change is not yet implemented")
+      }
       const userData = {
           user: {
-              username: this.userName.current!.value ? this.userName.current!.value: this.props.user.username,
+              firstName: this.firstName.current!.value ? this.firstName.current!.value: this.state.firstName,
+              lastName: this.lastName.current!.value ? this.lastName.current!.value: this.state.lastName,
+              userName: this.userName.current!.value ? this.userName.current!.value: this.props.user.userName,
               email: this.props.user.email,
               newEmail: this.contactEmail.current!.value ? this.contactEmail.current!.value: this.props.user.email,
-              name: this.firstName.current!.value ? this.firstName.current!.value: this.state.firstName,
-              surname: this.lastName.current!.value ? this.lastName.current!.value: this.state.lastName,
-              bio: this.bio.current!.value ? this.bio.current!.value: this.state.bio
+              aboutMe: this.aboutMe.current!.value ? this.aboutMe.current!.value: this.state.aboutMe
           }
       };
-
-      console.log("userData: ", userData);
 
       UsersAPI.updateProfile(userData) // Uses "axios" instead of "fetch"
           .then( (response) => {
@@ -159,7 +157,7 @@ export default class Profile extends React.Component<IProfileProps, IProfileStat
               if (response.status === 200){
                   this.setState({
                       id: this.state.id + 1,
-                      bio: this.bio.current!.value ? this.bio.current!.value: this.state.bio
+                      aboutMe: this.aboutMe.current!.value ? this.aboutMe.current!.value: this.state.aboutMe
                   })
               } else {
                   alert("Profile update failed to send.")
@@ -169,7 +167,6 @@ export default class Profile extends React.Component<IProfileProps, IProfileStat
 
   public render() {
 
-      console.log("Profile props", this.props);
       const { uploading, images, avatar } = this.state;
 
       const avatarLoader = () => {
@@ -186,14 +183,14 @@ export default class Profile extends React.Component<IProfileProps, IProfileStat
       };
 
       const currentBio = () => {
-          if (this.state.bio.length > 0){
+          if (this.state.aboutMe && this.state.aboutMe.length > 0){
               return (
                   <div className="row mt-3">
                       <div className="col-lg-12 pt-3 border-bottom border-top" >
-                          <label htmlFor='input-bio' className="font-weight-bold">
+                          <label htmlFor='input-about-me' className="font-weight-bold">
                               Current Bio
                           </label>
-                          <pre>{ this.state.bio }</pre>
+                          <pre>{ this.state.aboutMe }</pre>
                       </div>
                   </div>)
           } else {
@@ -213,7 +210,7 @@ export default class Profile extends React.Component<IProfileProps, IProfileStat
                       <p>JPEG or PNG with a maximum size of 150 KB</p>
                   </div>
               </div>
-              <form onSubmit={this.handleSubmit}>
+              <form onSubmit={this.handleUpdateSave}>
                   <div className="row">
                       <div className="col-lg-6 pt-3">
                           <label htmlFor='input-username' className="font-weight-bold">
@@ -247,23 +244,23 @@ export default class Profile extends React.Component<IProfileProps, IProfileStat
                           <label htmlFor='input-password' className="font-weight-bold">
                               New password
                           </label>
-                          <input id="input-password" className="rounded form-control" type="password" ref={this.password} required={false} placeholder="****" />
+                          <input id="input-password" className="rounded form-control" type="password" ref={this.password} required={false} placeholder="*******" />
                       </div>
                       <div className="col-lg-6 pt-3">
                           <label htmlFor='input-confirm' className="font-weight-bold">
                               Repeat new password
                           </label>
-                          <input id="input-confirm" className="rounded form-control" type="password" ref={this.confirm} required={false} placeholder="****"/>
+                          <input id="input-confirm" className="rounded form-control" type="password" ref={this.confirm} required={false} placeholder="*******"/>
                       </div>
                   </div>
                   { currentBio() }
                   <div className="row">
                       <div className="col-lg-12 pt-3">
-                          <label htmlFor='input-bio' className="font-weight-bold">
+                          <label htmlFor='input-about-me' className="font-weight-bold">
                               Bio update
                           </label>
-                          <textarea id="input-bio" className="rounded form-control"  rows={8} cols={80}
-                                    ref={this.bio} required={false} placeholder="Tell us a bit about yourself..."
+                          <textarea id="input-about-me" className="rounded form-control"  rows={8} cols={80}
+                                    ref={this.aboutMe} required={false} placeholder="Tell us a bit about yourself..."
                           />
                       </div>
                   </div>
