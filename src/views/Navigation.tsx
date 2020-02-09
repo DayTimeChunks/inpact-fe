@@ -18,7 +18,7 @@ export default class Navigation extends React.Component<INavProps, INavState> {
               <ButtonGroup>
                   <DropdownButton  as={ButtonGroup} id="bg-nested-dropdown" title="my inPact" variant="secondary">
                     <NavItem className="ml-3"><NavLink to={`/my-inpact/profile`}>My profile</NavLink></NavItem>
-                    <NavItem className="ml-3"><NavLink to={`/my-inpact/projects`}>My projects</NavLink></NavItem>
+                    <NavItem className="ml-3"><NavLink to={`/my-inpact/campaigns`}>My Campaigns</NavLink></NavItem>
                     <NavItem className="ml-3"><NavLink onClick={this.props.onLogOut}  to={`/my-inpact/login`}>Log out</NavLink></NavItem>
                   </DropdownButton>
               </ButtonGroup>

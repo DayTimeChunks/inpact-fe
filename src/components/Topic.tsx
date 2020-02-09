@@ -9,11 +9,11 @@ function Topic(props: any) {
   const { area } = props.match.params;
 
   switch (area) {
-    case 'projects':
+    case 'campaigns':
         return (
-        <div className="container tab-content my-3" id="projects">
-            <h3>My Projects</h3>
-            <Campaigns/>
+        <div className="container tab-content my-3" id="campaigns">
+            <h3>My Campaigns</h3>
+            <Campaigns user={user}/>
         </div>);
     case 'contribution':
         return (

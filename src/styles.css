@@ -8,6 +8,7 @@
 "http://placehold.it/1900x1080"
 */
 
+
 .cursive {
   font-family: 'Dancing Script', cursive;
 }
@@ -478,3 +479,13 @@ div.hand-rock {
 
 // Extra large devices (large desktops, 1200px and up)
 @media (min-width: 1200px) { ... }*/
+
+hr.my-primary {
+  border-top: 1px solid #0062cc;
+}
+hr.my-secondary {
+  border-top: 1px solid #6c757d;
+}
+hr.my-success {
+  border-top: 1px solid #28a745;
+}

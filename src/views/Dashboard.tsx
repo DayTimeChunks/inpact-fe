@@ -28,10 +28,10 @@ export default class Dashboard extends React.Component<IDashboardProps, IDashboa
                       <div className="row border-bottom">
                           <Nav fill={true} variant="tabs">
                               <Nav.Item className="nav-item ml-3">
-                                  <NavLink className="nav-link border" to={`${url}/profile`} >My profile</NavLink>
+                                  <NavLink className="nav-link border" to={`${url}/profile`} >Profile</NavLink>
                               </Nav.Item>
                               <Nav.Item className="nav-item ml-1">
-                                  <NavLink className="nav-link border" to={`${url}/projects`}>My projects</NavLink>
+                                  <NavLink className="nav-link border" to={`${url}/campaigns`}>My Campaigns</NavLink>
                               </Nav.Item>
                               {/*<Nav.Item className="nav-item">*/}
                                   {/*<NavLink className="nav-link border" to={`${url}/contribution`}>My contributions</NavLink>*/}

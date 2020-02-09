@@ -56,3 +56,9 @@ export interface IProfileState {
   images?: Array<{public_id: string; secure_url: string }>;
   avatar?: string;
 }
+
+// Campaigns
+// export interface ICampaingsProps extends IProfileProps {}
+export interface ICampaingsState {
+  campaigns: any[]
+}

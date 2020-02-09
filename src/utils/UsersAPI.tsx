@@ -60,6 +60,16 @@ export const getUserProfile = (body: object) =>
         method: 'POST'
     }).then(res => res.json());
 
+export const postEndpoint = (body: object, endpoint: string) =>
+    fetch(`${api}/${endpoint}`, {
+        body: JSON.stringify(body),
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        method: 'POST'
+    }).then(res => res.json());
+
 
 export const updateProfile = (body: object) =>
     axios({
