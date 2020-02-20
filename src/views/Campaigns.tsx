@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Card, Button, Container, Row, ProgressBar } from 'react-bootstrap';
 import * as UsersAPI from '../utils/UsersAPI'
 import { IProfileProps, ICampaingsState } from '../domain/types';
+import { Link } from 'react-router-dom';
 
 export default class Campaigns extends React.Component<IProfileProps, ICampaingsState> {
 
@@ -126,9 +127,11 @@ export default class Campaigns extends React.Component<IProfileProps, ICampaings
         return (
             <div>
                 <div>
-                    <Button variant="success" size="lg" className="mt-3" block>
-                        Add new campaign!
-                    </Button>
+                    <Link to='/project-submission'>
+                        <Button variant="success" size="lg" className="mt-3" block>
+                            Add new campaign!
+                        </Button>
+                    </Link>
                 </div>
                 <div>{this.loadCampaigns()}</div>
             </div>
