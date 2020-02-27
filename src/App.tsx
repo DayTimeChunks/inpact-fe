@@ -70,8 +70,8 @@ export default class App extends React.Component<IAppProps, IAppState> {
                 <Navigation loggedIn={this.state.loggedIn} onLogOut={this.logOut}/>
                 <Switch>
                     {/* <Route exact={true} path="/" component={Landing}/> */}
-                    {/* this.checkCredentialsLogin */}
-                    <Route path="/login" render={ this.goToProjectSubsmission }/> 
+                    {/* this.checkCredentialsLogin  OR this.goToProjectSubsmission */}
+                    <Route path="/login" render={ this.goToProjectSubsmission  }/> 
                     <Route path="/signup" render={ this.checkCredentialsSignup }/>
                     {/*{this.state.loggedIn &&*/}
                         {/*<Route path="/my-inpact" component={ DashboardTabs }/>*/}

@@ -187,6 +187,20 @@ body {
   width: 20rem;
 }
 
+.fixed-campaign-buttons {
+  position: fixed;
+  z-index: 1;
+}
+
+.project-basic-info-gray {
+  color: white;
+  background-color: rgb(85, 94, 105);
+}
+.project-basic-info {
+  /* color: white; */
+  background-color: rgb(235, 235, 235);
+}
+
 /* Tabs on myInpact page */
 /*.nav-item > {*/
   /*background-color: white;*/
