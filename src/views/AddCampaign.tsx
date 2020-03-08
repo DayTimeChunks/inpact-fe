@@ -1,6 +1,13 @@
 import * as React from "react";
 import { Button, ButtonToolbar, Card, Form, FormGroup, Table } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
+import moment from "moment";
+import { LoremIpsum } from "lorem-ipsum";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faTrashAlt, faPlusCircle, faTimesCircle, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 
 /**
  * TODOs:
@@ -27,8 +34,23 @@ interface IAddCampaignState {
   organizationWebsite: string;
   projectAdministrators: string[];
   projectAmbassadors: string[];
+  timeline: {milestone: string, description: string, start: string}[];
+  addMilestone: boolean;
+  editMilestone?: any;
+  startDate: Date;
   saved: boolean;
 }
+
+const lorem = new LoremIpsum({
+  sentencesPerParagraph: {
+    max: 8,
+    min: 4
+  },
+  wordsPerSentence: {
+    max: 16,
+    min: 4
+  }
+});
 
 export default class AddCampaign extends React.Component<IAddCampaignProps, IAddCampaignState> {
 
@@ -48,6 +70,11 @@ export default class AddCampaign extends React.Component<IAddCampaignProps, IAdd
   private organizationWebsite = React.createRef<HTMLInputElement>();
   private addAdmins = React.createRef<HTMLInputElement>();
   private addAmbassadors = React.createRef<HTMLInputElement>();
+
+  // Milestones
+  private newMilestoneOrder = React.createRef<HTMLInputElement>();
+  private newMilestoneName = React.createRef<HTMLTextAreaElement>();
+  private newMilestoneDesc = React.createRef<HTMLTextAreaElement>();
 
   constructor(props: IAddCampaignProps) {
     super(props)
@@ -75,6 +102,19 @@ export default class AddCampaign extends React.Component<IAddCampaignProps, IAdd
       organizationWebsite: '',
       projectAdministrators: [],
       projectAmbassadors: [],
+      timeline: [
+        { milestone: lorem.generateSentences(1), description: lorem.generateSentences(3), start: moment().format("DD/MM/YYYY") },
+        { milestone: lorem.generateSentences(1), description: lorem.generateSentences(3), start: moment().format("DD/MM/YYYY") },
+        { milestone: lorem.generateSentences(1), description: lorem.generateSentences(3), start: moment().format("DD/MM/YYYY") },
+        { milestone: lorem.generateSentences(1), description: lorem.generateSentences(3), start: moment().format("DD/MM/YYYY") },
+        { milestone: lorem.generateSentences(1), description: lorem.generateSentences(3), start: moment().format("DD/MM/YYYY") },
+        { milestone: lorem.generateSentences(1), description: lorem.generateSentences(3), start: moment().format("DD/MM/YYYY") },
+        { milestone: lorem.generateSentences(1), description: lorem.generateSentences(3), start: moment().format("DD/MM/YYYY") },
+        { milestone: lorem.generateSentences(1), description: lorem.generateSentences(3), start: moment().format("DD/MM/YYYY") },
+      ],
+      addMilestone: false,
+      editMilestone: undefined,
+      startDate: new Date(),
       saved: false,
     }
     this.onSelectedCategoriesChange = this.onSelectedCategoriesChange.bind(this)
@@ -84,6 +124,13 @@ export default class AddCampaign extends React.Component<IAddCampaignProps, IAdd
     this.handleAddAmbassadors = this.handleAddAmbassadors.bind(this)
     this.removeChoice = this.removeChoice.bind(this)
     this.saveCampaign = this.saveCampaign.bind(this)
+    this.enterMilestone = this.enterMilestone.bind(this)
+    this.deleteMilestone = this.deleteMilestone.bind(this)
+    this.handleEditMilestone = this.handleEditMilestone.bind(this)
+    this.renderNewMilestone = this.renderNewMilestone.bind(this)
+    this.renderEditMilestone = this.renderEditMilestone.bind(this)
+    this.handleDateChange = this.handleDateChange.bind(this)
+    this.saveMilestone = this.saveMilestone.bind(this)
 
   }
   private onSelectedCategoriesChange(e: any) {
@@ -180,42 +227,199 @@ export default class AddCampaign extends React.Component<IAddCampaignProps, IAdd
     }
     this.addAmbassadors.current!.value = '';
   }
+  private enterMilestone(e: any) {
+    e.preventDefault()
+    const visible = this.state.addMilestone;
+    this.setState({
+      addMilestone: visible !== true,
+      editMilestone: undefined
+    })
+  }
+
+  private handleDateChange(date: Date) {
+    if (date) this.setState({ startDate: date });
+  }
+
+  private saveMilestone(e: any) {
+    e.preventDefault()
+    const { timeline, editMilestone } = this.state;
+    let order = this.newMilestoneOrder.current ? parseInt(this.newMilestoneOrder.current.value) : undefined;
+    const milestone = this.newMilestoneName.current ? this.newMilestoneName.current.value : "";
+    const description = this.newMilestoneDesc.current ? this.newMilestoneDesc.current.value : "";
+    const entry = {
+      milestone,
+      description,
+      start: this.state.startDate.toLocaleString().split(',')[0]
+    }
+    if (milestone && description) {
+      if (order) {
+        order = order < 0 ? 0 : order;
+        if (editMilestone) {
+          const oldOrder = editMilestone.order
+          if (oldOrder === order) {
+            timeline.splice(order, 1, entry)
+          } else {
+            timeline.splice(oldOrder, 1) // delete old position
+            timeline.splice(order, 0, entry) // insert it in new position
+          }
+        } else {
+          timeline.splice(order, 0, entry)  // adding below
+        }
+      } else {
+        timeline.push(entry)
+      }
+
+      this.setState({
+        timeline: timeline,
+        addMilestone: false,
+        editMilestone: undefined,
+        saved: false
+       })
+    }
+  }
+
+  private editTableHeader(remove: string, add: string) {
+    return (
+      <tr>
+        <th className="order-width">Order #</th>
+        <th>Milestone title</th>
+        <th>Description</th>
+        <th>Date</th>
+        <th>{remove}</th>
+        <th>{add}</th>
+      </tr>
+    )
+  }
+
+  private renderNewMilestone() {
+    const { timeline } = this.state;
+    return (
+      <Table striped bordered hover responsive={true}>
+        <thead>
+          {this.editTableHeader("Cancel", "Add")}
+        </thead>
+        <tbody>
+        <tr>
+          <td><input className="rounded form-control" type="number" ref={this.newMilestoneOrder} required={true} placeholder="Order #" defaultValue={timeline.length} /> </td>
+          <td><textarea className="rounded form-control" rows={5} cols={50} ref={this.newMilestoneName} required={true} placeholder="Title" />  </td>
+          <td className='text-center'><textarea className="rounded form-control" rows={5} cols={90} ref={this.newMilestoneDesc} required={true} placeholder="Description"  /> </td>
+          <td><DatePicker
+            selected={this.state.startDate}
+            onChange={this.handleDateChange}/>
+            </td>
+          <td className='text-center'>
+          <button onClick={this.enterMilestone} className='button-icon py-1'>
+            <FontAwesomeIcon icon={faTrashAlt} size='2x'/>
+          </button>
+          </td>
+          <td className='text-center'>
+          <button onClick={this.saveMilestone} className='button-icon py-1'>
+            <FontAwesomeIcon icon={faPlusCircle} size='2x'/>
+          </button>
+          </td>
+        </tr>
+        </tbody>
+      </Table>
+    )
+  }
+
+  private handleEditMilestone(e: any) {
+    // Renders the editable area visible
+    e.preventDefault();
+    let { timeline, editMilestone } = this.state;
+    let start;
+    if (!editMilestone) {
+      const editMilestoneOrder = parseInt(e.currentTarget.value);
+      const entry = timeline[editMilestoneOrder]
+      start = new Date(entry.start)
+      editMilestone = {
+        order: editMilestoneOrder,
+        ...entry,
+        start
+      }
+    } else {
+      editMilestone = undefined
+      start = new Date()
+    }
+    this.setState({
+      addMilestone: false,
+      editMilestone,
+      startDate: start
+    })
+  }
+
+  private renderEditMilestone() {
+    return (
+      <Table striped bordered hover responsive={true}>
+        <thead>
+          {this.editTableHeader("Cancel", "Save")}
+        </thead>
+        <tbody>
+        <tr>
+          <td><input className="rounded form-control" type="number" ref={this.newMilestoneOrder} required={true} placeholder="Order #" defaultValue={this.state.editMilestone.order} /> </td>
+          <td><textarea className="rounded form-control" rows={5} cols={50} ref={this.newMilestoneName} required={true} placeholder="Title" defaultValue={this.state.editMilestone.milestone} />  </td>
+          <td className='text-center'><textarea className="rounded form-control" rows={5} cols={90} required={true} ref={this.newMilestoneDesc} placeholder="Description" defaultValue={this.state.editMilestone.description}/> </td>
+          <td><DatePicker
+            selected={this.state.startDate}
+            onChange={this.handleDateChange}/>
+            </td>
+          <td className='text-center'>
+          <button onClick={this.enterMilestone} className='button-icon py-1'>
+            <FontAwesomeIcon icon={faTimesCircle} size='2x'/>
+          </button>
+          </td>
+          <td className='text-center'>
+          <button onClick={this.saveMilestone} className='button-icon py-1'>
+            <FontAwesomeIcon icon={faCheckCircle} size='2x'/>
+          </button>
+          </td>
+        </tr>
+        </tbody>
+      </Table>
+    )
+  }
+
+  private deleteMilestone(e: any) {
+    e.preventDefault()
+    const { timeline } = this.state;
+    timeline.splice(e.currentTarget.value, 1)
+    this.setState({ timeline,
+      addMilestone: false,
+      editMilestone: undefined
+     })
+  }
 
   private renderTableTimeline() {
     return (
-      <Table striped bordered hover>
+      <Table striped bordered hover responsive={true}>
         <thead>
           <tr>
             <th>#</th>
             <th>Project milestones</th>
             <th>Description</th>
-            <th>Starting date</th>
-            <th>Edit</th>
+            <th>Date</th>
+            <th>Submit</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td><Button>Edit row</Button> <Button>Add row above</Button> <Button>Delete row</Button></td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td><Button>Edit row</Button> <Button>Add row above</Button> <Button>Delete row</Button></td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td><Button>Edit row</Button> <Button>Add row above</Button> <Button>Delete row</Button></td>
-          </tr>
-        
+            {this.state.timeline.map( (item, indx) => {
+              return (
+              <tr key={indx}>
+                <td>{indx}</td>
+                <td>{item.milestone}</td>
+                <td>{item.description}</td>
+                <td>{item.start}</td>
+                <td className='text-center'>
+                  <button value={indx}  className='button-icon py-2 px-2' onClick={this.deleteMilestone}>
+                    <FontAwesomeIcon icon={faTrashAlt} size='2x'/>
+                  </button>
+                  <button value={indx}  className='button-icon ml-2 px-1' onClick={this.handleEditMilestone}>
+                    <FontAwesomeIcon icon={faEdit} size='2x'/>
+                  </button>
+                  </td>
+              </tr>
+              )
+            })}
         </tbody>
       </Table>
     )
@@ -240,7 +444,7 @@ export default class AddCampaign extends React.Component<IAddCampaignProps, IAdd
           <div id="my-inpact" className="py-5 my-3 px-3 white-section">
             <div className="row text-right pt-3 ">
               <div className="col fixed-campaign-buttons">
-                <input type='button' className={(this.state.saved ? "btn btn-secondary" : "btn btn-primary") + " px-5 mx-3"} value="Save" onClick={this.saveCampaign} />
+                <input type='button' className={(this.state.saved ? "btn btn-secondary" : "btn btn-primary") + " px-5 mx-3"} value={this.state.saved ? "Saved" : "Save!"} onClick={this.saveCampaign} />
                 <input type="submit" className="btn btn-success px-5 mx-3" value="Submit" />
               </div>
             </div>
@@ -323,6 +527,16 @@ export default class AddCampaign extends React.Component<IAddCampaignProps, IAdd
                   <label htmlFor='timeline' className="font-weight-bold mt-3">
                     Timeline</label>
                   {this.renderTableTimeline()}
+                <div className="text-right my-2">
+                  <Button 
+                    variant={this.state.addMilestone || this.state.editMilestone!! ? "secondary" : "success"} 
+                    value={undefined} 
+                    onClick={this.enterMilestone}>
+                    {this.state.addMilestone || this.state.editMilestone!! ? "Cancel": "Enter new milestone"}
+                  </Button>
+                </div>
+                {this.state.addMilestone ? this.renderNewMilestone() : undefined}
+                {this.state.editMilestone ? this.renderEditMilestone() : undefined}
                 </div>
 
               </div>

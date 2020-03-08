@@ -133,6 +133,16 @@ body {
   text-align: center;
 }
 
+.button-icon {
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+/* .order-width {
+  width: 15%;
+} */
+
 /*// Extra small devices (portrait phones, less than 576px)
 // No media query since this is the default in Bootstrap*/
 
