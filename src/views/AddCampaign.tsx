@@ -35,8 +35,11 @@ interface IAddCampaignState {
   projectAdministrators: string[];
   projectAmbassadors: string[];
   timeline: {milestone: string, description: string, start: string}[];
+  budget: {title: string, description: string, amount: number}[];
   addMilestone: boolean;
+  addBudget: boolean;
   editMilestone?: any;
+  editBudget?: any;
   startDate: Date;
   saved: boolean;
 }
@@ -112,8 +115,20 @@ export default class AddCampaign extends React.Component<IAddCampaignProps, IAdd
         { milestone: lorem.generateSentences(1), description: lorem.generateSentences(3), start: moment().format("DD/MM/YYYY") },
         { milestone: lorem.generateSentences(1), description: lorem.generateSentences(3), start: moment().format("DD/MM/YYYY") },
       ],
+      budget: [
+        { title: lorem.generateSentences(1), description: lorem.generateSentences(2), amount: Math.round(100 * Math.random() * 100) /100 },
+        { title: lorem.generateSentences(1), description: lorem.generateSentences(2), amount: Math.round(100 * Math.random() * 100) /100 },
+        { title: lorem.generateSentences(1), description: lorem.generateSentences(2), amount: Math.round(100 * Math.random() * 100) /100 },
+        { title: lorem.generateSentences(1), description: lorem.generateSentences(2), amount: Math.round(100 * Math.random() * 100) /100 },
+        { title: lorem.generateSentences(1), description: lorem.generateSentences(2), amount: Math.round(100 * Math.random() * 100) /100 },
+        { title: lorem.generateSentences(1), description: lorem.generateSentences(2), amount: Math.round(100 * Math.random() * 100) /100 },
+        { title: lorem.generateSentences(1), description: lorem.generateSentences(2), amount: Math.round(100 * Math.random() * 100) /100 },
+        { title: lorem.generateSentences(1), description: lorem.generateSentences(2), amount: Math.round(100 * Math.random() * 100) /100 },
+      ],
       addMilestone: false,
+      addBudget: false,
       editMilestone: undefined,
+      editBudget: undefined,
       startDate: new Date(),
       saved: false,
     }
@@ -125,10 +140,12 @@ export default class AddCampaign extends React.Component<IAddCampaignProps, IAdd
     this.removeChoice = this.removeChoice.bind(this)
     this.saveCampaign = this.saveCampaign.bind(this)
     this.enterMilestone = this.enterMilestone.bind(this)
-    this.deleteMilestone = this.deleteMilestone.bind(this)
+    this.deleteListItem = this.deleteListItem.bind(this)
     this.handleEditMilestone = this.handleEditMilestone.bind(this)
+    this.handleEditBudget = this.handleEditBudget.bind(this)
     this.renderNewMilestone = this.renderNewMilestone.bind(this)
     this.renderEditMilestone = this.renderEditMilestone.bind(this)
+    this.cancelEdit = this.cancelEdit.bind(this)
     this.handleDateChange = this.handleDateChange.bind(this)
     this.saveMilestone = this.saveMilestone.bind(this)
 
@@ -229,11 +246,33 @@ export default class AddCampaign extends React.Component<IAddCampaignProps, IAdd
   }
   private enterMilestone(e: any) {
     e.preventDefault()
+    console.log("enterMilestone id", e.currentTarget.id)
     const visible = this.state.addMilestone;
     this.setState({
       addMilestone: visible !== true,
       editMilestone: undefined
     })
+  }
+
+  private cancelEdit(e: any) {
+    e.preventDefault();
+    console.log('cancelEdit, ', e.currentTarget.id)
+    switch (true) {
+      case (e.currentTarget.id).includes('milestone'):
+        this.setState({
+          addMilestone: false,
+          editMilestone: undefined
+        });
+      break;
+      case (e.currentTarget.id).includes('budget'):
+        this.setState({
+          addBudget: false,
+          editBudget: undefined
+        });
+      break;
+      default:
+        break;
+    }
   }
 
   private handleDateChange(date: Date) {
@@ -308,7 +347,7 @@ export default class AddCampaign extends React.Component<IAddCampaignProps, IAdd
             onChange={this.handleDateChange}/>
             </td>
           <td className='text-center'>
-          <button onClick={this.enterMilestone} className='button-icon py-1'>
+          <button id='milestone-render-new' onClick={this.enterMilestone} className='button-icon py-1'>
             <FontAwesomeIcon icon={faTrashAlt} size='2x'/>
           </button>
           </td>
@@ -321,6 +360,14 @@ export default class AddCampaign extends React.Component<IAddCampaignProps, IAdd
         </tbody>
       </Table>
     )
+  }
+
+  private renderNewBudget() {
+    console.log('implement renderNewBudget')
+  }
+
+  private renderEditBudget() {
+    console.log('implement renderEditBudget')
   }
 
   private handleEditMilestone(e: any) {
@@ -348,6 +395,26 @@ export default class AddCampaign extends React.Component<IAddCampaignProps, IAdd
     })
   }
 
+  private handleEditBudget(e: any) {
+    // Renders the editable area visible
+    e.preventDefault();
+    let { budget, editBudget } = this.state;
+    if (!editBudget) {
+      const editOrder = parseInt(e.currentTarget.value);
+      const entry = budget[editOrder]
+      editBudget = {
+        order: editOrder,
+        ...entry
+      }
+    } else {
+      editBudget = undefined
+    }
+    this.setState({
+      addBudget: false,
+      editBudget
+    })
+  }
+
   private renderEditMilestone() {
     return (
       <Table striped bordered hover responsive={true}>
@@ -364,7 +431,7 @@ export default class AddCampaign extends React.Component<IAddCampaignProps, IAdd
             onChange={this.handleDateChange}/>
             </td>
           <td className='text-center'>
-          <button onClick={this.enterMilestone} className='button-icon py-1'>
+          <button id='milestone-cancel-edit' onClick={this.cancelEdit} className='button-icon py-1'>
             <FontAwesomeIcon icon={faTimesCircle} size='2x'/>
           </button>
           </td>
@@ -379,14 +446,29 @@ export default class AddCampaign extends React.Component<IAddCampaignProps, IAdd
     )
   }
 
-  private deleteMilestone(e: any) {
+  private deleteListItem(e: any) {
     e.preventDefault()
-    const { timeline } = this.state;
-    timeline.splice(e.currentTarget.value, 1)
-    this.setState({ timeline,
-      addMilestone: false,
-      editMilestone: undefined
-     })
+    const listId = e.currentTarget.id;
+    switch (true) {
+      case listId.includes('milestone'):
+        const { timeline } = this.state;
+        timeline.splice(e.currentTarget.value, 1)
+        this.setState({ timeline,
+          addMilestone: false,
+          editMilestone: undefined
+         })
+        break;
+      case listId.includes('budget'):
+        const { budget } = this.state;
+        budget.splice(e.currentTarget.value, 1);
+        this.setState({ budget,
+          addBudget: false,
+          editBudget: undefined
+         })
+        break;
+      default:
+        break;
+    }
   }
 
   private renderTableTimeline() {
@@ -410,10 +492,47 @@ export default class AddCampaign extends React.Component<IAddCampaignProps, IAdd
                 <td>{item.description}</td>
                 <td>{item.start}</td>
                 <td className='text-center'>
-                  <button value={indx}  className='button-icon py-2 px-2' onClick={this.deleteMilestone}>
+                  <button value={indx} id={`milestone-${indx}`} className='button-icon py-2 px-2' onClick={this.deleteListItem}>
                     <FontAwesomeIcon icon={faTrashAlt} size='2x'/>
                   </button>
-                  <button value={indx}  className='button-icon ml-2 px-1' onClick={this.handleEditMilestone}>
+                  <button value={indx} className='button-icon ml-2 px-1' onClick={this.handleEditMilestone}>
+                    <FontAwesomeIcon icon={faEdit} size='2x'/>
+                  </button>
+                  </td>
+              </tr>
+              )
+            })}
+        </tbody>
+      </Table>
+    )
+  }
+  private renderTableBudget() {
+    return (
+      <Table striped bordered hover responsive={true}>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Item</th>
+            <th>Description</th>
+            <th>Amount $US</th>
+            <th>Amount EUR</th>
+            <th>Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+            {this.state.budget.map( (item, indx) => {
+              return (
+              <tr key={indx}>
+                <td>{indx}</td>
+                <td>{item.title}</td>
+                <td>{item.description}</td>
+                <td>{item.amount}</td>
+                <td>{Math.round(item.amount * 0.9 * 100) / 100}</td>
+                <td className='text-center'>
+                  <button value={indx} id={`budget-${indx}`} className='button-icon py-2 px-2' onClick={this.deleteListItem}>
+                    <FontAwesomeIcon icon={faTrashAlt} size='2x'/>
+                  </button>
+                  <button value={indx}  className='button-icon ml-2 px-1' onClick={this.handleEditBudget}>
                     <FontAwesomeIcon icon={faEdit} size='2x'/>
                   </button>
                   </td>
@@ -528,17 +647,34 @@ export default class AddCampaign extends React.Component<IAddCampaignProps, IAdd
                     Timeline</label>
                   {this.renderTableTimeline()}
                 <div className="text-right my-2">
-                  <Button 
+                  <Button id='milestone-new-green'
                     variant={this.state.addMilestone || this.state.editMilestone!! ? "secondary" : "success"} 
                     value={undefined} 
-                    onClick={this.enterMilestone}>
+                    onClick={this.state.addMilestone || this.state.editMilestone!! ? this.cancelEdit : this.enterMilestone}>
                     {this.state.addMilestone || this.state.editMilestone!! ? "Cancel": "Enter new milestone"}
                   </Button>
                 </div>
                 {this.state.addMilestone ? this.renderNewMilestone() : undefined}
                 {this.state.editMilestone ? this.renderEditMilestone() : undefined}
                 </div>
-
+              </div>
+              {/* Budget */}
+              <div className="row px-3">
+                <div className="col-lg-12 pt-3 px-3">
+                  <label htmlFor='timeline' className="font-weight-bold mt-3">
+                    Budget</label>
+                  {this.renderTableBudget()}
+                <div className="text-right my-2">
+                  <Button 
+                    variant={this.state.addBudget || this.state.editBudget!! ? "secondary" : "success"} 
+                    value={undefined} 
+                    onClick={this.enterMilestone}>
+                    {this.state.addBudget || this.state.editBudget!! ? "Cancel": "Enter new budget item"}
+                  </Button>
+                </div>
+                {this.state.addBudget ? this.renderNewBudget() : undefined}
+                {this.state.editBudget ? this.renderEditBudget() : undefined}
+                </div>
               </div>
             </div>
 
