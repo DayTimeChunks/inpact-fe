@@ -30,12 +30,6 @@ export interface INavProps {
 
 export interface INavState {}
 
-export interface IDashboardProps extends IAppState {}
-
-export interface IDashboardState {
-  params: object;
-}
-
 export interface IProfileProps {
   user: {
     userName: string,
@@ -55,6 +49,16 @@ export interface IProfileState {
   uploading: boolean;
   images?: Array<{public_id: string; secure_url: string }>;
   avatar?: string;
+}
+
+export interface IUserProfileDB {
+  email: string;
+  user_name: string;
+  first_name: string;
+  last_name: string;
+  token: string;
+  about_me?: string;
+  avatar?: any;
 }
 
 // Campaigns

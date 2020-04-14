@@ -8,6 +8,7 @@ import Dashboard from './views/Dashboard';
 import Navigation from './views/Navigation'
 import * as UsersAPI from './utils/UsersAPI'
 import AddCampaign from './views/AddCampaign';
+import Projects from './views/Projects';
 // import { Footer } from 
 
 export default class App extends React.Component<IAppProps, IAppState> {
@@ -20,12 +21,13 @@ export default class App extends React.Component<IAppProps, IAppState> {
       };
 
       this.goToDashboard = this.goToDashboard.bind(this);
+      this.goToProjects = this.goToProjects.bind(this);
       this.checkCredentialsSignup = this.checkCredentialsSignup.bind(this);
       this.checkCredentialsLogin = this.checkCredentialsLogin.bind(this);
       this.onAuthorization = this.onAuthorization.bind(this)
       this.goToProjectSubsmission = this.goToProjectSubsmission.bind(this)
     }
-      
+
     public onAuthorization(user: object) {
         this.setState({loggedIn: true, user: user})
     }
@@ -34,10 +36,12 @@ export default class App extends React.Component<IAppProps, IAppState> {
         return <Dashboard {...props} loggedIn={this.state.loggedIn} user={this.state.user}/>;
     }
 
+    private goToProjects(props: object){
+        return <Projects {...props} loggedIn={this.state.loggedIn} user={this.state.user}/>;
+    }
+
     private goToProjectSubsmission(props: object) {
-        console.log()
-        // return <AddCampaign {...props} loggedIn={this.state.loggedIn}/>
-        return <AddCampaign {...props} loggedIn={true}/>
+        return <AddCampaign {...props} loggedIn={this.state.loggedIn}/>
     }
 
     private checkCredentialsSignup() {
@@ -71,13 +75,14 @@ export default class App extends React.Component<IAppProps, IAppState> {
                 <Switch>
                     {/* <Route exact={true} path="/" component={Landing}/> */}
                     {/* this.checkCredentialsLogin  OR this.goToProjectSubsmission */}
-                    <Route path="/login" render={ this.goToProjectSubsmission  }/> 
+                    <Route path="/login" render={ this.checkCredentialsLogin  }/> 
                     <Route path="/signup" render={ this.checkCredentialsSignup }/>
                     {/*{this.state.loggedIn &&*/}
                         {/*<Route path="/my-inpact" component={ DashboardTabs }/>*/}
                     {/*}*/}
                     <Route path="/my-inpact/:area" render={ this.goToDashboard }/>
                     <Route path="/project-submission" render={ this.goToProjectSubsmission } />
+                    <Route path="/projects/:id" render={ this.goToProjects } />
                     {/* {this.state.loggedIn &&                        
                     } */}
                 </Switch>

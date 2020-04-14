@@ -1,5 +1,6 @@
 
 import axios from 'axios';
+import { IUserProfileDB } from '../domain/types';
 const api = process.env.REACT_APP_API_URL;
 // const test = process.env.TEST_VAR;
 // console.log("process ", process)
@@ -50,7 +51,7 @@ export const uploadAvatar = (body: FormData) =>
     })
         .then(res => res.json());
 
-export const getUserProfile = (body: object) =>
+export const getUserProfile = (body: object): Promise<IUserProfileDB> =>
     fetch(`${api}/get-profile`, {
         body: JSON.stringify(body),
         headers: {
@@ -58,7 +59,8 @@ export const getUserProfile = (body: object) =>
             'Content-Type': 'application/json'
         },
         method: 'POST'
-    }).then(res => res.json());
+    })
+    .then(res => res.json());
 
 export const postEndpoint = (body: object, endpoint: string) =>
     fetch(`${api}/${endpoint}`, {
@@ -68,7 +70,9 @@ export const postEndpoint = (body: object, endpoint: string) =>
             'Content-Type': 'application/json'
         },
         method: 'POST'
-    }).then(res => res.json());
+    })
+    .then(res => res.json())
+    .catch( err => console.error(` Failed to fetch endpoint ${endpoint} with ${err}`));
 
 
 export const updateProfile = (body: object) =>

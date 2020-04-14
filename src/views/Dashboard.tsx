@@ -1,13 +1,20 @@
 import * as React from 'react'
-import { IDashboardProps, IDashboardState } from '../domain/types';
+import { IAppState } from '../domain/types';
 import { NavLink, Route, Redirect } from 'react-router-dom';
 import { Nav } from "react-bootstrap";
 import Topic from '../components/Topic';
+
+export interface IDashboardProps extends IAppState {}
+
+export interface IDashboardState {
+  params: object;
+}
 
 export default class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
 
   constructor(props: IDashboardProps){
       super(props); // carries also default objects: history, location, etc. (not yet defined in props' type)
+    //   console.log("dashboard props", props)
     //   this.state = {
     //       params: this.props.match.params
     //   };

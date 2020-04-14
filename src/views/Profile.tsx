@@ -35,9 +35,6 @@ export default class Profile extends React.Component<IProfileProps, IProfileStat
 
     public async componentDidMount(){
         const user = await UsersAPI.getUserProfile({ user: this.props.user })
-        if (user.password) {
-            console.warn("Stop sending back password to front end!!")
-        }
         let { email, userName } = this.props.user;
         this.setState({
             uploading: false,

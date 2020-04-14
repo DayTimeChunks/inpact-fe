@@ -8,12 +8,8 @@ import { faEdit, faTrashAlt, faPlusCircle, faTimesCircle, faCheckCircle } from "
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-
-/**
- * TODOs:
- * 1) saveCampaign(): Send saved state to backend on saveCampaign()
- * 2) handleSubmit(): Submit form, sending final info to abckend and redirecting to campaign page
- */
+// TODO: saveCampaign(): Send saved state to backend on saveCampaign()
+// TODO: handleSubmit(): Submit form, sending final info to abckend and redirecting to campaign page
 interface IAddCampaignProps {
   loggedIn: boolean;
   // user: IProfileProps;
@@ -206,7 +202,7 @@ export default class AddCampaign extends React.Component<IAddCampaignProps, IAdd
     this.throttledInput = throttle(this.throttledInput.bind(this), 500, {trailing: true})
   }
 
-  private handleInput(e: any) {
+  private handleInput(e: any) { // <- insert this method in: <input onChange={this.handleInput}/>.
     e.persist()
 
     // if event needs throttling:

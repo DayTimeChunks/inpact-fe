@@ -20,7 +20,7 @@ export default class Campaigns extends React.Component<IProfileProps, ICampaings
         this.setState({ campaigns })
     }
 
-    public card = (title: string, description: string, image: string, stage: string, funding: any, timeline: any) => {
+    public card = (id: number,title: string, description: string, image: string, stage: string, funding: any, timeline: any) => {
         if (stage === "funding") {
             const progress = Math.round((funding.raised/funding.goal)*100)
             const raised = Math.round(funding.raised)
@@ -39,7 +39,10 @@ export default class Campaigns extends React.Component<IProfileProps, ICampaings
                                 {`${raised} of ${funding.goal} ${funding.currency}`}
                         </Card.Text>
                         <Button className="mr-2" variant="success">Donate</Button>
-                        <Button variant="info">Go to campaign</Button>
+                        <Link to={`/projects/${id}`}>
+                            <Button variant="info">Go to campaign</Button>
+                        </Link>
+                        {/*  */}
                     </Card.Body>
                     <Card.Footer className="text-muted text-center">
                         {/* Try SVGs: https://blog.lftechnology.com/using-svg-icons-components-in-react-44fbe8e5f91 */}
@@ -87,21 +90,21 @@ export default class Campaigns extends React.Component<IProfileProps, ICampaings
             const fundingItems = campaigns.map((c) => {
                 if (c.stage === "funding") {
                     return (<div key={c.id.toString()} className="my-3 mx-3">
-                        {this.card(c.title, c.description, c.image, c.stage, c.funding, c.timeline)}
+                        {this.card(c.id, c.title, c.description, c.image, c.stage, c.funding, c.timeline)}
                     </div>)}
                 return undefined;
             })
             const ongoingItems = campaigns.map((c) => {
                 if (c.stage === "ongoing") {
                     return (<div key={c.id.toString()} className="my-3 mx-3">
-                        {this.card(c.title, c.description, c.image, c.stage, c.funding, c.timeline)}
+                        {this.card(c.id, c.title, c.description, c.image, c.stage, c.funding, c.timeline)}
                     </div>)}
                 return undefined;
             })
             const archivedItems = campaigns.map((c) => {
                 if (c.stage === "archived") {
                     return (<div key={c.id.toString()} className="my-3 mx-3">
-                        {this.card(c.title, c.description, c.image, c.stage, c.funding, c.timeline)}
+                        {this.card(c.id, c.title, c.description, c.image, c.stage, c.funding, c.timeline)}
                     </div>)}
                 return undefined;
             })
