@@ -82,9 +82,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
                     {/*}*/}
                     <Route path="/my-inpact/:area" render={ this.goToDashboard }/>
                     <Route path="/project-submission" render={ this.goToProjectSubsmission } />
-                    <Route path="/projects/:id" render={ this.goToProjects } />
-                    {/* {this.state.loggedIn &&                        
-                    } */}
+                    <Route path="/projects/:id/:area" render={ this.goToProjects } />
                 </Switch>
                 {/* <Footer/> */}
             </div>);

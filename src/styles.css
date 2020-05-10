@@ -376,6 +376,18 @@ div.hand-rock {
   }
 }
 
+.comment-box {
+  max-width: 600px;
+}
+
+.comment-box-icon {
+  width: 40px;
+}
+
+.fig-caption-card {
+  font-size: 0.9em;
+}
+
 /* Large devices */
 @media (min-width: 992px) {
 

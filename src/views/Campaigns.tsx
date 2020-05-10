@@ -39,7 +39,7 @@ export default class Campaigns extends React.Component<IProfileProps, ICampaings
                                 {`${raised} of ${funding.goal} ${funding.currency}`}
                         </Card.Text>
                         <Button className="mr-2" variant="success">Donate</Button>
-                        <Link to={`/projects/${id}`}>
+                        <Link to={`/projects/${id}/timeline`}>
                             <Button variant="info">Go to campaign</Button>
                         </Link>
                         {/*  */}

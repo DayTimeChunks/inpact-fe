@@ -66,3 +66,39 @@ export interface IUserProfileDB {
 export interface ICampaingsState {
   campaigns: any[]
 }
+
+export interface IProject {
+  id: string;
+  projectTitle: string;
+  shortDescription: string;
+  summary: string;
+  background: string;
+  detailedDescription: string;
+  projectImpact: string;
+  location: string;
+  selectedCategories: { text: string; id: number; }[],
+  organizationName: string;
+  organizationDescription: string;
+  organizationWebsite: string;
+  projectAdministrators: string[];
+  projectAmbassadors: string[];
+  milestones: { name: string; description: string; start: Date; }[];
+  budget: { name: string; description: string; amount: number; }[];
+  totalBudget: number;
+  raised: number;
+  threshold: number;
+  startDate: Date;
+  whatWith5: string;
+  whatWith10: string;
+  whatWith25: string;
+  whatWith100: string;
+  whatWith200: string;
+  whatWith500: string;
+  projectHolder: {
+    email: string;
+    userName: string;
+    firstName: string;
+    lastName: string;
+    avatar?: string;
+  }
+}
