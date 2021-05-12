@@ -18,7 +18,7 @@
     "@types/react-dom": "^16.9.0",
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "lodash": "^4.17.15",
     "lorem-ipsum": "^2.0.3",
     "moment": "^2.24.0",
